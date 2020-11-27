@@ -9,9 +9,6 @@ const dataFile = fs.readFileSync(filePath).toString()
 
 // Create an array with the data separated by newlines.
 let dataStringSplit = dataFile.split("\n")
-    .map(function (a) {
-        return a.trim();
-    });
 
 
 // Remove the introductory part which does not contain data.
@@ -35,10 +32,10 @@ let chunked = chunkArray(dataStringSplit)
 let result =
     chunked.map(function (v) {
         return v.map(function (v2) {
-            return v2.split(" ").filter(function (el) {
+            return v2.match(/.{1,5}/g).filter(function (el) {
                 return el != "";
             }).map(function (v3) {
-                return v3.replace(",", "")
+                return v3.replace(",", "").trim()
             })
         })
     })
@@ -65,8 +62,8 @@ let values = async function (arr) {
     for (let i = 0; i < arr.length; i++) {
         const block = arr[i]
         let data = {}
-        data.xRef = block[0][1]
-        data.yRef = block[0][2]
+        data.xRef = block[0][2]
+        data.yRef = block[0][3]
 
         // Counting the years.
 
@@ -82,13 +79,15 @@ let values = async function (arr) {
             for (let k = 0; k < year.length; k++) {
                 data.date = 1 + "." + (k + 1) + "." + (1990 + j)
                 data.value = year[k]
+                if (data.value.length == 5) {
+                    console.log(data.value)
+                }
 
 
+                // // Save data into the database
+                // const myPrecipitationDatabase = new gridPrecipitation(data);
 
-                // Save data into the database
-                const myPrecipitationDatabase = new gridPrecipitation(data);
-
-                await myPrecipitationDatabase.save({});
+                // await myPrecipitationDatabase.save({});
 
             }
         }
@@ -97,7 +96,6 @@ let values = async function (arr) {
 
     }
 }
-
 
 
 values(result);
