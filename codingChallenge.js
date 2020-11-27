@@ -32,8 +32,8 @@ let chunked = chunkArray(dataStringSplit)
 let result =
     chunked.map(function (v) {
         return v.map(function (v2) {
-            return v2.match(/.{1,5}/g).filter(function (el) {
-                return el != "";
+            return v2.match(/.{1,5}/g).filter(function (element) {
+                return element != "";
             }).map(function (v3) {
                 return v3.replace(",", "").trim()
             })
@@ -84,10 +84,10 @@ let values = async function (arr) {
                 }
 
 
-                // // Save data into the database
-                // const myPrecipitationDatabase = new gridPrecipitation(data);
+                // Save data into the database
+                const myPrecipitationDatabase = new gridPrecipitation(data);
 
-                // await myPrecipitationDatabase.save({});
+                await myPrecipitationDatabase.save({});
 
             }
         }
